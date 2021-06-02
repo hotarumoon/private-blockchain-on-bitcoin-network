@@ -41,10 +41,12 @@ class Block {
             // Save in auxiliary variable the current block hash
             const currentHash = this.hash;                                
             // Recalculate the hash of the Block
-            const expectedHash = SHA256(JSON.stringify(this)).toString();
+            this.hash = null;
             // Comparing if the hashes changed && Returning the Block is not valid
-            resolve(currentHash == expectedHash)
+            const expectedHash = SHA256(JSON.stringify(this)).toString();
             // Returning the Block is valid
+            this.hash = currentHash;
+            resolve(currentHash == expectedHash)
 
         });
     }
@@ -61,13 +63,13 @@ class Block {
     getBData() {
         // Getting the encoded data saved in the Block
         if (!this.previousBlockHash){
-            resolve(null);
+            return null;
         }  
         // Decoding the data to retrieve the JSON representation of the object
         // Parse the data to an object to be retrieve.
         const decodedBlockData = JSON.parse(hex2ascii(this.body));
         // Resolve with the data if the object isn't the Genesis block
-        resolve(decodedBlockData);
+        return decodedBlockData;
     }
 
 }

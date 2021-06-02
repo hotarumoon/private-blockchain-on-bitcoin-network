@@ -79,6 +79,7 @@ class Blockchain {
                 this.chain.push(block);
                 this.height = heightNew;
 
+                this.validateChain();
                 resolve(block);
 
             } catch (err) {
@@ -140,6 +141,7 @@ class Blockchain {
 
             } catch (err) {
                 reject(err);
+                return;
 
             }
         });
