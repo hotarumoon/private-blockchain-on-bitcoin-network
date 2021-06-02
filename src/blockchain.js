@@ -128,11 +128,16 @@ class Blockchain {
             const time = parseInt(message.split(':')[1]);
             let timeNow = parseInt(new Date().getTime().toString().slice(0, -3));
       
-            if (timeNow - time > 5 * 60) 
+            if (timeNow - time > 5 * 60){
                 reject(new Error('Time elapsed is greater than 5 minutes'));
+                return;
+            }
 
-            if (!bitcoinMessage.verify(message, address, signature))
+            if (!bitcoinMessage.verify(message, address, signature)){
                 reject(new Error('Verification failed!!!'));
+                return;
+            }
+                
 
             try {
                 const block = new BlockClass.Block({star: star, owner: address });
